@@ -33,7 +33,7 @@ function Navbar() {
           <a href="#">Sale</a>
         </li>
         <li>
-          <a href="/login-activity">login</a>
+          <a href="/login">login</a>
         </li>
         <li className="icons">
           <a href="#">
