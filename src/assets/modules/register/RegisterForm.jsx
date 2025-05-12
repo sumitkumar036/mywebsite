@@ -1,60 +1,37 @@
-
 import React, { useState } from 'react';
-import './register.css';
 import { toast } from 'react-toastify';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
+import config from '../../script/config';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(''); // State for error message
-
-
-  function formatDateGMT() {
-    const now = new Date();
-
-    const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][now.getDay()];
-    const day = now.getDate();
-    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][now.getMonth()];
-    const year = now.getFullYear();
-    const hours = now.getUTCHours();
-    const minutes = now.getUTCMinutes();
-    const seconds = now.getUTCSeconds();
-
-    // Ensure leading zeros for single-digit values
-    const formattedHours = hours < 10 ? '0' + hours : hours;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
-
-    const formattedDate = `${dayOfWeek}, ${day} ${month} ${year} ${formattedHours}:${formattedMinutes}:${formattedSeconds} GMT`;
-    console.log('Formatted date:', formattedDate);
-    return formattedDate;
-  }
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-     if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match.");
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
       return;
     }
-     setPasswordError(""); 
-
-    const endpoint = "https://script.google.com/macros/s/AKfycby2sRNEClyo0IFwNi7XRi9Xk2FUknE8e3fXs1UOD1Oz6_hYiyX_Z7JzNHh_8PMW3A/exec";
 
     try {
-      const formData = new URLSearchParams(); 
+      const formData = new URLSearchParams();
+      formData.append('Action', "register");
       formData.append('Name', username);
+      formData.append('Email', email);
       formData.append('Password', password);
-      formData.append('LastLogin', formatDateGMT());
-
       console.log('Form data:', formData.toString());
-      const response = await fetch(endpoint, {
+      const response = await fetch(config.apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formData.toString(), // Convert to string
+        body: formData.toString(),
       });
 
       if (!response.ok) {
@@ -64,13 +41,20 @@ function RegisterForm() {
       const data = await response.json();
 
       if (data.success) {
-        toast.success(data.message || 'Login successful!');
-        console.log('Login successful:', data);
+        toast.success(data.message || 'Registration successful!');
+        console.log('Registration successful:', data);
+       
+        localStorage.setItem('email', email);
+        
+        navigate('/login');
         setUsername('');
+        setEmail('');
         setPassword('');
+        setConfirmPassword('');
+
       } else {
-        toast.error(data.message || 'Login failed. Please try again.');
-        console.error('Login failed:', data);
+        toast.error(data.message || 'Registration failed. Please try again.');
+        console.error('Registration failed:', data);
       }
     } catch (error) {
       toast.error(error.message || 'An error occurred. Please try again.');
@@ -79,59 +63,74 @@ function RegisterForm() {
   };
 
   return (
-      <div className="login-container">
-      <h2>Registration</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Username or Email Address *"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-           {passwordError && <p className="error-message">{passwordError}</p>}
-        </div>
-        <div className="form-actions">
-          <div className="remember-me">
-            <input type="checkbox" id="remember" name="remember" />
-            <label htmlFor="remember">Remember me</label>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card mt-5 bg-light">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Register</h2>
+              <form className="register-form" onSubmit={handleSubmit}>
+                <div className="form-group mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Username *"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-2">
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Email Address *"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-2">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Password *"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-2">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirm Password *"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary btn-block mt-4">
+                  Register
+                </button>
+                <div className="text-center mt-3">
+                  <p>
+                    Already have an account? <a href="#/login">Login</a>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
-          <a href="/forget-password" className="forgot-password">Forgot your password?</a>
         </div>
-        <br />
-        <hr />
-        <div className="button-group">
-          <a href='/login' className="anchor">Already have account ?</a>
-          <button type="submit" className="register-button">Register</button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }

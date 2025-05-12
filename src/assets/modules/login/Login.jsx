@@ -1,46 +1,24 @@
 import React, { useState } from 'react';
-import './Login.css';
 import { toast } from 'react-toastify';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import config from '../../script/config';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-
-  function formatDateGMT() {
-    const now = new Date();
-
-    const dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][now.getDay()];
-    const day = now.getDate();
-    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][now.getMonth()];
-    const year = now.getFullYear();
-    const hours = now.getUTCHours();
-    const minutes = now.getUTCMinutes();
-    const seconds = now.getUTCSeconds();
-
-    // Ensure leading zeros for single-digit values
-    const formattedHours = hours < 10 ? '0' + hours : hours;
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
-
-    const formattedDate = `${dayOfWeek}, ${day} ${month} ${year} ${formattedHours}:${formattedMinutes}:${formattedSeconds} GMT`;
-    console.log('Formatted date:', formattedDate);
-    return formattedDate;
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    return;
-    const endpoint = "https://script.google.com/macros/s/AKfycby2sRNEClyo0IFwNi7XRi9Xk2FUknE8e3fXs1UOD1Oz6_hYiyX_Z7JzNHh_8PMW3A/exec";
-
+   
     try {
-      const formData = new URLSearchParams(); 
+      const formData = new URLSearchParams();
+      formData.append('Action', "login");
+      formData.append('Email', localStorage.getItem('email'));
       formData.append('Name', username);
       formData.append('Password', password);
-      formData.append('LastLogin', formatDateGMT());
 
       console.log('Form data:', formData.toString());
-      const response = await fetch(endpoint, {
+      const response = await fetch(config.apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -70,45 +48,67 @@ function LoginForm() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Username or Email Address *"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-actions">
-          <div className="remember-me">
-            <input type="checkbox" id="remember" name="remember" />
-            <label htmlFor="remember">Remember me</label>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card mt-5">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Login</h2>
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="form-group mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Username or Email Address *"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group mb-2">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group d-flex justify-content-between align-items-center">
+                  <div className="form-check  mb-2">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="remember"
+                      name="remember"
+                    />
+                    <label className="form-check-label" htmlFor="remember">
+                      Remember me
+                    </label>
+                  </div>
+                  <a href="/forget-password" className="text-muted">
+                    Forgot your password?
+                  </a>
+                </div>
+                <hr className="my-4" />
+                <div className="d-flex justify-content-center gap-2">
+                  <button type="submit" className="btn btn-primary mr-2">
+                    Submit
+                  </button>
+                  <a href="#/registration" className="btn btn-outline-secondary">
+                    Register
+                  </a>
+                </div>
+              </form>
+            </div>
           </div>
-          <a href="/forget-password" className="forgot-password">Forgot your password?</a>
         </div>
-        <br />
-        <hr />
-        <div className="button-group">
-          <button type="submit" className="login-button">Submit</button>
-          <a href='/registration' className="anchor">Register</a>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }
