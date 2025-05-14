@@ -3,16 +3,32 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import config from '../../script/config';
+import { Eye, EyeSlashFill } from 'react-bootstrap-icons';
+import { InputGroup, Form } from 'react-bootstrap'; 
+import LoadingScreen from '../loadingScreen/LoadingScreen';
+
 
 function RegisterForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
@@ -43,27 +59,35 @@ function RegisterForm() {
       if (data.success) {
         toast.success(data.message || 'Registration successful!');
         console.log('Registration successful:', data);
-       
+
         localStorage.setItem('email', email);
-        
+
         navigate('/login');
         setUsername('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-
-      } else {
+      } 
+      else 
+      {
         toast.error(data.message || 'Registration failed. Please try again.');
         console.error('Registration failed:', data);
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       toast.error(error.message || 'An error occurred. Please try again.');
       console.error('Error:', error);
+    }
+    finally
+    {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="container">
+      {isLoading && <LoadingScreen message="Registering..."/>} {/* LOADING SCREEN*/}
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-6">
           <div className="card mt-5 bg-light">
@@ -95,28 +119,42 @@ function RegisterForm() {
                   />
                 </div>
                 <div className="form-group mb-2">
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Password *"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      name="password"
+                      placeholder="Password *"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <InputGroup.Text
+                      onClick={togglePasswordVisibility}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {showPassword ? <EyeSlashFill /> : <Eye />}
+                    </InputGroup.Text>
+                  </InputGroup>
                 </div>
                 <div className="form-group mb-2">
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Confirm Password *"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="Confirm Password *"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                    <InputGroup.Text
+                      onClick={toggleConfirmPasswordVisibility}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {showConfirmPassword ? <EyeSlashFill /> : <Eye />}
+                    </InputGroup.Text>
+                  </InputGroup>
                 </div>
                 <button type="submit" className="btn btn-primary btn-block mt-4">
                   Register

@@ -29,39 +29,10 @@ function Navbar() {
                 Home <FontAwesomeIcon icon={faAngleDown} className="ms-1" />
               </a>
             </li>
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#">
-                Men
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Women
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Page <FontAwesomeIcon icon={faAngleDown} className="ms-1"/>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Shop
-              </a>
-            </li> */}
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#">
-                Sale
-              </a>
-            </li> 
-             <li className="nav-item">
-              <a className="nav-link" href="#/login">
-                Login
-              </a>
-            </li>*/}
+          
             <li className="nav-item d-flex align-items-center">
               <a className="nav-link" href="#/login">
-                <FontAwesomeIcon icon={faUser} />
+              Login <FontAwesomeIcon icon={faUser} />
               </a>
             </li>
             <li className="nav-item d-flex align-items-center">
