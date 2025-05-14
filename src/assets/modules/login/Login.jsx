@@ -27,6 +27,7 @@ function LoginForm() {
       const formData = new URLSearchParams();
       formData.append('Action', "login");
       formData.append('Name', username);
+      formData.append('Email', username);
       formData.append('Password', password);
 
       console.log('Form data:', formData.toString());
@@ -35,7 +36,7 @@ function LoginForm() {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formData.toString(), // Convert to string
+        body: formData.toString(), 
       });
 
       if (!response.ok) {
@@ -85,6 +86,7 @@ function LoginForm() {
                     placeholder="Email Address *"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+          
                     required
                   />
                 </div>
