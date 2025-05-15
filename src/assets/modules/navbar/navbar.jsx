@@ -24,7 +24,7 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/Home">
+              <a className="nav-link active" aria-current="page" href="#/home">
                 <FontAwesomeIcon icon={faHome} className="me-1" /> {/* Home Icon */}
                 Home <FontAwesomeIcon icon={faAngleDown} className="ms-1" />
               </a>

@@ -1,9 +1,9 @@
 import './ProductCard.css'; // Custom styles for the card
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
-import image from '../modules/images/default.jpg'
+import image from '../../images/default.jpg'
 
-const ProductCard = ({ imageSrc, title, price, soldOut, onAddToCart, discountPercent }) => {
+const ProductCard = ({id, imageSrc, title, price, soldOut, onAddToCart, discountPercent }) => {
 
   // Function to extract the numeric value from the price string
   // This function removes the "Rs." prefix and any non-numeric characters
@@ -20,7 +20,6 @@ const ProductCard = ({ imageSrc, title, price, soldOut, onAddToCart, discountPer
   const discountNum = Number(discountPercent) || 0;
   const validDiscount = isNaN(discountNum) ? 0 : discountNum;
   const discountPrice = priceNum - (priceNum * validDiscount / 100);
-
 
   return (
     <div className="card-wrapper product-card-wrapper underline-links-hover">
@@ -57,7 +56,7 @@ const ProductCard = ({ imageSrc, title, price, soldOut, onAddToCart, discountPer
           <div className="card__information">
 
             <h3 className="card__heading h5">
-              <a href={`/products/${title}`} className="full-unstyled-link">
+              <a href={`#/products/${id}`} className="full-unstyled-link">
                 {title}
               </a>
             </h3>

@@ -6,17 +6,19 @@ import RegisterForm from './assets/modules/register/RegisterForm';
 import CheckoutForm from './assets/modules/checkout/CheckoutForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './assets/modules/home/Home';
+import ProductDescription from './assets/modules/product/form/ProductDescription';
 
 function App() {
   return (
     <div className="App-bg min-vh-100 d-flex flex-column">
       <Navbar />
-      <Home />
         <HashRouter>
           <Routes>
+            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/registration" element={<RegisterForm />} />
             <Route path="/checkout" element={<CheckoutForm />} />
+            <Route path="/products/:id" element={<ProductDescription />} />
           </Routes>
         </HashRouter>
     

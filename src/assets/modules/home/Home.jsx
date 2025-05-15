@@ -1,11 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import ProductCard from './../../common/ProductCard';
+import ProductCard from '../product/card/ProductCard';
 import config from '../../script/config';
 import LoadingScreen from '../loadingScreen/LoadingScreen';
 
 function Home() {
-
     // State to store the products
     // and loading state
     const [products, setProducts] = useState(() => {
@@ -65,6 +64,7 @@ function Home() {
             (
                 <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={product.id}>
                     <ProductCard
+                    id={product.id}
                     imageSrc={product.imageSrc}
                     title={product.title}
                     price={product.price}
