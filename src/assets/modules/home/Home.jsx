@@ -69,6 +69,7 @@ function Home() {
                     title={product.title}
                     price={product.price}
                     soldOut={product.soldOut}
+                    discountPercent="10"
 
                     />
                 </div> ))
