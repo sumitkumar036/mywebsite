@@ -58,7 +58,6 @@ function Home() {
     // LOADING SCREEN / WELCOME MESSAGE / PRODUCT CARDS
     <div className="container">
          {isLoading && <LoadingScreen message="Loading products..." />} {/* LOADING SCREEN*/}
-        <p>Welcome to my store</p>
         <div className="row g-0">
             {products.map(product => 
             (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import config from '../../script/config';
@@ -48,10 +48,9 @@ function LoginForm() {
       if (data.success) {
   
         toast.success(data.message || 'Login successful!');
-        console.log('Login successful:', data);
         setUsername('');
         setPassword('');
-        navigate('/Home');
+        navigate('/home');
       } else {
         toast.error(data.message || 'Login failed. Please try again.');
         console.error('Login failed:', data);

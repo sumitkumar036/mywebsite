@@ -4,9 +4,10 @@ import './ProductDescription.css';
 import LoadingScreen from '../../loadingScreen/LoadingScreen';
 import config from '../../../script/config';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
-const ProductDescription = ({}) => {
+const ProductDescription = () => {
 
   const [product, setProduct] = useState(() => {
     const saved = localStorage.getItem('description');
@@ -40,9 +41,11 @@ const ProductDescription = ({}) => {
                 const result = await response.json();
                 setProduct(result.data);
                 localStorage.setItem('description', JSON.stringify(result.data));
+                toast.success('Product details fetched successfully!');
              } 
              catch (error) {
                  console.error('Error fetching products:', error);
+                 toast.success('Error fetching products... Please try again later.');
              } 
              finally {
                  setLoading(false);
@@ -157,6 +160,26 @@ const ProductDescription = ({}) => {
               <li>{product.description[3]}</li>
             </ul>
           </div>
+
+          {/* <div>
+            <h5>What's Included:</h5>
+            <ul>
+            <li>10 hand painted gel nails</li>
+            <li>NEW: 1 Additional Backup Nail "just in case"</li>
+            <li>Application Kit: mini file, mini buffer, cuticle pusher, nail glue, and an alcohol wipe</li>
+            </ul>
+            </div>
+            
+            <p>
+            For <strong>custom sizing</strong>, please select "Custom" and leave your measurements at checkout in the instruction box: Thumb, Index, Middle, Ring, Pinky – e.g. 17mm, 15mm, 16mm, 12mm, 10mm. If ordering on mobile, send us an email after you check out with your measurements.
+            </p>
+            
+            <small className="text-muted d-block">
+            *Buyer is responsible should an international shipping import or custom fee apply.<br />
+            *Colours may differ from actual product depending on the viewing screen.<br />
+            *Please double-check <a href="#">your nail size</a> before ordering.<br />
+            *There may be slight variations as each set is 100% handmade.
+            </small> */}
         </Col>
       </Row>
     </Container>

@@ -2,6 +2,7 @@ import './ProductCard.css'; // Custom styles for the card
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import image from '../../images/default.jpg'
+import config from '../../../script/config'; // Importing configuration for rupee symbol
 
 const ProductCard = ({id, imageSrc, title, price, soldOut, onAddToCart, discountPercent }) => {
 
@@ -67,7 +68,7 @@ const ProductCard = ({id, imageSrc, title, price, soldOut, onAddToCart, discount
                         <>
                           <span className="price--original"> &#8377; {priceNum}</span>
                           <span className="price--discount">
-                              &#8377; {discountPrice} ({validDiscount}% OFF)
+                              {config.rupeeSymbol} {discountPrice} ({validDiscount}% OFF)
                           </span>
                         </>
                       ) : (

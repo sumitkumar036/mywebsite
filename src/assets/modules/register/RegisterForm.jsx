@@ -32,6 +32,7 @@ function RegisterForm() {
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
+      setIsSubmitting(false);
       return;
     }
 
