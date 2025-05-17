@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { HashRouter, Routes, Route } from 'react-router-dom';
@@ -16,27 +16,31 @@ function App() {
    // Cart state - array of objects {id, title, price, quantity, image}
   const [cartItems, setCartItems] = useState([]);
 
+  /* ***************************************************************
+   DELETE_FROM_CART
+  -----------------
+  
+  This is to add product or increase quantity
   //****************************************************************
-  // DELETE_FROM_CART
-  //-----------------
-  //
-  // This is to add product or increase quantity
-  //****************************************************************
+  */
+const addToCart = (product) => {
+  setCartItems(prevItems => {
+    const exist = prevItems.find(item => item.id === product.id);
+    if (exist) {
+      // Increase existing quantity by product.quantity
+      return prevItems.map(item =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + (product.quantity || 1) }
+          : item
+      );
+    } else {
+      // Add new product with given quantity or default to 1
+      return [...prevItems, { ...product, quantity: product.quantity || 1 }];
+    }
+  });
+};
 
-  const addToCart = (product) => {
-    setCartItems(prevItems => {
-      const exist = prevItems.find(item => item.id === product.id);
-      if (exist) {
-        // increase quantity
-        return prevItems.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        // add new product with quantity 1
-        return [...prevItems, { ...product, quantity: 1 }];
-      }
-    });
-  };
+
 
   //****************************************************************
   // DELETE_FROM_CART
@@ -87,13 +91,23 @@ function App() {
             <Route path="login" element={<LoginForm />} />
             <Route path="registration" element={<RegisterForm />} />
             <Route path="checkout" element={<Checkout cartItems={cartItems}/>} />
-            <Route path="products/:id" element={<ProductDescription />} />
+
+           <Route path="products/:id" element={
+                <ProductDescription 
+                  cartItems={cartItems}
+                  addToCart={addToCart}
+                  removeFromCart={removeFromCart}
+                  deleteFromCart={deleteFromCart}
+                />
+              } />
+
             <Route path="cart" element={<CartContainer 
               cartItems={cartItems}
               addToCart={addToCart}
               removeFromCart={removeFromCart}
               deleteFromCart={deleteFromCart}
             />} />
+
           </Route>
         </Routes>
       </HashRouter>

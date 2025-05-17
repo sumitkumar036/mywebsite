@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import image from '../../images/default.jpg'
 import config from '../../../script/config'; // Importing configuration for rupee symbol
-import { useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useOutletContext } from 'react-router-dom';
 
 
-const ProductCard = ({id, imageSrc, title, price, soldOut, onAddToCart, discountPercent }) => {
+const ProductCard = ({id, imageSrc, title, price, soldOut, discountPercent }) => {
   const { addToCart } = useOutletContext();
   // Function to extract the numeric value from the price string
   // This function removes the "Rs." prefix and any non-numeric characters
@@ -93,8 +93,9 @@ const ProductCard = ({id, imageSrc, title, price, soldOut, onAddToCart, discount
            <button
                 className="btn btn-primary"
                 onClick={() => {
-                  addToCart({ id, title, price: priceNum, image: imageSrc });
-                  toast.success(`${title} added to cart!`);
+
+                  addToCart({ id, title, price: priceNum, quantity:1, image: imageSrc });
+                  toast.success(`${title}: added to cart!`);
                 }}
               >
                 <FontAwesomeIcon icon={faShoppingCart} />

@@ -6,8 +6,14 @@ import config from '../../../script/config';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { useOutletContext } from 'react-router-dom';
+
+
 
 const ProductDescription = () => {
+  const { addToCart } = useOutletContext();
+  const [quantity, setQuantity] = useState(1);
+
 
   const [product, setProduct] = useState(() => {
     const saved = localStorage.getItem('description');
@@ -16,6 +22,22 @@ const ProductDescription = () => {
   
   const [isLoading, setLoading] = useState(false);
   const { id } = useParams();
+
+ // Function to extract the numeric value from the price string
+  // This function removes the "Rs." prefix and any non-numeric characters
+  const extractNumber = (str) => {
+         const withoutRs = str.replace(/Rs\.?\s*/i, '');
+        const cleanedString = withoutRs.replace(/[^0-9.]/g, '');
+        const amount = parseFloat(cleanedString);
+        return isNaN(amount) ? null : amount;
+    };
+
+  // Extract the numeric value from the price string
+  // and convert it to a number
+  const priceNum = extractNumber(product.price.toString());
+
+  const increment = () => setQuantity(q => q + 1);
+  const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
 
   // Fetch product details from the API
   useEffect(() => {
@@ -82,8 +104,6 @@ const ProductDescription = () => {
     
   )}
 
-
-
       <Row className="gy-4">
         {/* Images */}
         <Col md={6}>
@@ -138,17 +158,37 @@ const ProductDescription = () => {
             </small>
           </h4>
 
-          <div className="d-flex align-items-center gap-3 mb-3">
-            <Button variant="outline-secondary" size="sm">-</Button>
-            <span>1</span>
-            <Button variant="outline-secondary" size="sm">+</Button>
-          </div>
-            {
-              product.soldOut
-              ? <Button variant="secondary" disabled className="w-100">Sold out</Button>
-              :<Button variant="primary" className="w-100">Add to cart</Button> 
-            }
+         <div className="d-flex align-items-center gap-3 mb-3">
+          <Button variant="outline-secondary" size="sm" onClick={decrement}>-</Button>
+          <span>{quantity}</span>
+          <Button variant="outline-secondary" size="sm" onClick={increment}>+</Button>
+      </div>
+          {
+          product.soldOut ? (
+            <Button variant="secondary" disabled className="w-100">
+              Sold out
+            </Button>
+          ) : (
+            <Button
+            variant="primary"
+              className="w-100"
+              onClick={() => {
+                addToCart({
+                  id: product.id,
+                  title: product.title,
+                  price: priceNum,
+                  quantity: quantity,
+                  image: product.imageSrc[0],
+                });
 
+                toast.success(`${product.title} added to cart!`);
+                setQuantity(1);
+              }}
+            >
+              Add to cart
+          </Button>
+          )
+        }
           <hr />
 
           <div>
@@ -160,26 +200,6 @@ const ProductDescription = () => {
               <li>{product.description[3]}</li>
             </ul>
           </div>
-
-          {/* <div>
-            <h5>What's Included:</h5>
-            <ul>
-            <li>10 hand painted gel nails</li>
-            <li>NEW: 1 Additional Backup Nail "just in case"</li>
-            <li>Application Kit: mini file, mini buffer, cuticle pusher, nail glue, and an alcohol wipe</li>
-            </ul>
-            </div>
-            
-            <p>
-            For <strong>custom sizing</strong>, please select "Custom" and leave your measurements at checkout in the instruction box: Thumb, Index, Middle, Ring, Pinky – e.g. 17mm, 15mm, 16mm, 12mm, 10mm. If ordering on mobile, send us an email after you check out with your measurements.
-            </p>
-            
-            <small className="text-muted d-block">
-            *Buyer is responsible should an international shipping import or custom fee apply.<br />
-            *Colours may differ from actual product depending on the viewing screen.<br />
-            *Please double-check <a href="#">your nail size</a> before ordering.<br />
-            *There may be slight variations as each set is 100% handmade.
-            </small> */}
         </Col>
       </Row>
     </Container>
