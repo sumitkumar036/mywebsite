@@ -1,23 +1,13 @@
-export default
-{
+const config ={
     //AppScript endPOint for login/registration
-    apiEndpoint:"https://script.google.com/macros/s/AKfycbwFT0fGE0uUCj7rewdNz93wecWQkSLBFpMOKObGdJbMIdLblU85rO9fOoaWpDP5jLI/exec",
-
-    //project spi key
-    projectApiKey:"AIzaSyA51my8-8HuxUL0MsR2yrSkgLWp07Y6vME",
-
-    //Google Spreadsheet API endpoint
-    spreadsheetId:"1QBmj2II7a1lYTM_NyzcL4p_wj6zQ--EPiYzND-eePPE",
-
-    //Google Drive API folder ID
-    folderId:"1SmH_rk87_5KSZaZd4n0b1CqIyzOaTBiL",
+    apiEndpoint:"https://script.google.com/macros/s/AKfycbxk_gnuR2AZ_LFFsXLM1J0RqUOhx8aetv4PcvwYP0NbffuHzjnFi7mO19OXGOdokq8/exec",
+    
+    rupeeSymbol : "₹",
 
     currentDateTime : formatDateGMT()
 }
 
-
-
-
+export default config;
 
 function formatDateGMT() {
     const now = new Date();

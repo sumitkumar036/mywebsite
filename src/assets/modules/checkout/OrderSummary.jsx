@@ -7,7 +7,10 @@ export default function OrderSummary({
   onDiscountCodeChange,
   onApplyDiscount,
   totalAmount,
-}) {
+})
+
+
+{
   const calculateSubtotal = () =>
     cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
 
@@ -17,8 +20,8 @@ export default function OrderSummary({
         <h5 className="fw-bold mb-4">Order Summary</h5>
         <ul className="list-unstyled">
           {cartItems.map((item) => (
-            <li key={item.name} className="d-flex justify-content-between mb-2">
-              <span>{item.quantity} x {item.name}</span>
+            <li key={item.title} className="d-flex justify-content-between mb-2">
+              <span>{item.quantity} x {item.title}</span>
               <span>₹{(item.quantity * item.price).toFixed(2)}</span>
             </li>
           ))}

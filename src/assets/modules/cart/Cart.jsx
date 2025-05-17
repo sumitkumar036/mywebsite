@@ -1,7 +1,8 @@
 import React from 'react';
 import config from '../../script/config';
 
-const CartItem = ({ image, title, price, quantity, onAdd, onRemove, onDelete }) => {
+const Cart = ({ image, title, price, quantity, addQuantity, removeQuantity, onDelete }) => {
+  
   return (
     <div className="d-flex align-items-center mb-3 p-3 border rounded shadow-sm">
       {/* Product Image */}
@@ -21,7 +22,7 @@ const CartItem = ({ image, title, price, quantity, onAdd, onRemove, onDelete }) 
         <div className="d-flex align-items-center">
           <button
             className="btn btn-outline-secondary btn-sm me-2"
-            onClick={onRemove}
+            onClick={removeQuantity}
             aria-label="Decrease quantity"
           >
             −
@@ -29,7 +30,7 @@ const CartItem = ({ image, title, price, quantity, onAdd, onRemove, onDelete }) 
           <span className="fw-bold">{quantity}</span>
           <button
             className="btn btn-outline-secondary btn-sm ms-2"
-            onClick={onAdd}
+            onClick={addQuantity}
             aria-label="Increase quantity"
           >
             +
@@ -47,4 +48,4 @@ const CartItem = ({ image, title, price, quantity, onAdd, onRemove, onDelete }) 
   );
 };
 
-export default CartItem;
+export default Cart;

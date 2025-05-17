@@ -5,13 +5,16 @@ import {
   faUser,
   faShoppingCart,
   faSearch,
-} 
-
-from '@fortawesome/free-solid-svg-icons';
+}  from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from '../images/mrsingh.png';
 
-function Navbar() {
+
+function Navbar({ cartItems }) {
+
+  //This will re-render every time cartItems changes as long as:
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  
   return (
     <nav className="navbar navbar-dark bg-dark">
       <div className="container-fluid">
@@ -41,29 +44,44 @@ function Navbar() {
           <ul className="navbar-nav flex-row align-items-center gap-3">
 
             <li className="nav-item">
-              <a className="nav-link active d-flex align-items-center" href="#/home">
-                <FontAwesomeIcon icon={faHome} className="me-1" />
+              <a className="nav-link d-flex align-items-center position-relative" href="#/home">
+                <FontAwesomeIcon icon={faHome} className="me-1" size="lg"/>
                 Home <FontAwesomeIcon className="ms-1" />
               </a>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link d-flex align-items-center" href="#/login">
-                 <FontAwesomeIcon icon={faUser} className="me-1" />
+              <a className="nav-link d-flex align-items-center position-relative" href="#/login">
+                 <FontAwesomeIcon icon={faUser} className="me-1" size="lg"/>
                 Login <FontAwesomeIcon className="ms-1" />
               </a>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link d-flex align-items-center" href="#/cart">
-                   <FontAwesomeIcon icon={faShoppingCart} className="me-1" />
-                Cart <FontAwesomeIcon className="ms-1" />
+              <a className="nav-link d-flex align-items-center position-relative" href="#/cart">
+                <div className="position-relative">
+                  <FontAwesomeIcon icon={faShoppingCart} className="me-1" size="lg" />
+                  {totalItems > 0 && (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle bg-danger text-white fw-bold"
+                      style={{
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        padding: '2px 6px',
+                        lineHeight: '1',
+                      }}
+                    >
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
+                <span className="ms-1">Cart</span>
               </a>
-            </li>
+           </li>
 
             <li className="nav-item">
-              <a className="nav-link d-flex align-items-center" href="#/search">
-                 <FontAwesomeIcon icon={faSearch} className="me-1" />
+              <a className="nav-link d-flex align-items-center position-relative" href="#/search">
+                 <FontAwesomeIcon icon={faSearch} className="me-1" size="lg"/>
                 Search <FontAwesomeIcon className="ms-1" />
               </a>
             </li>
@@ -99,22 +117,24 @@ function Navbar() {
                 <a className="nav-link active" href="#/home">
                   <FontAwesomeIcon icon={faHome} className="me-2" />
                   Home
+                  
                 </a>
+                
               </li>
               <li className="nav-item mb-2">
-                <a className="nav-link" href="#/login">
+                <a className="nav-link" href="#/login" data-bs-dismiss="offcanvas">
                   <FontAwesomeIcon icon={faUser} className="me-2" />
                   Login
                 </a>
               </li>
               <li className="nav-item mb-2">
-                <a className="nav-link" href="#/cart">
+                <a className="nav-link" href="#/cart" data-bs-dismiss="offcanvas">
                   <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
                   Cart
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#/search">
+                <a className="nav-link" href="#/search" data-bs-dismiss="offcanvas">
                   <FontAwesomeIcon icon={faSearch} className="me-2" />
                   Search
                 </a>

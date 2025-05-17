@@ -3,13 +3,13 @@ import NavBar from "../modules/navbar/navbar";
 import Header from "../modules/home/Header";
 import Footer from "../modules/home/Footer";
 
-const Layout = () => {
+const Layout = ({ cartItems, addToCart, removeFromCart, deleteFromCart }) => {
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar />
+      <NavBar cartItems={cartItems}/>
       <Header />
-      <main className="flex-grow p-4">
-        <Outlet />
+      <main className="container py-4">
+        <Outlet context={{ cartItems, addToCart, removeFromCart, deleteFromCart }} />
       </main>
       <Footer />
     </div>
