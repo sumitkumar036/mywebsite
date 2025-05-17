@@ -5,10 +5,14 @@ import Method from './Method';
 import Payment from './Payment';
 import OrderSummary from './OrderSummary';
 
+import { useNavigate  } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 const steps = ['Contact', 'Shipping', 'Method', 'Payment'];
 
-export default function Checkout({ cartItems }) {
+export default function Checkout({ cartItems, customerInformation, setCustomerInformation }) {
   const [step, setStep] = useState(1);
+  const navigate  = useNavigate();
 
   const [contact, setContact] = useState({ email: '' });
   const [shippingAddress, setShippingAddress] = useState({
@@ -53,15 +57,29 @@ export default function Checkout({ cartItems }) {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  const handleContactChange = (e) => setContact({ ...contact, [e.target.name]: e.target.value });
-  const handleShippingAddressChange = (e) => setShippingAddress({ ...shippingAddress, [e.target.name]: e.target.value });
+ const handleContactChange = (e) => {
+  const updated = { ...contact, [e.target.name]: e.target.value };
+  setContact(updated);
+  setCustomerInformation((prev) => ({ ...prev, ...updated }));
+};
+
+  const handleShippingAddressChange = (e) => {
+  const updated = { ...shippingAddress, [e.target.name]: e.target.value };
+  setShippingAddress(updated);
+  setCustomerInformation((prev) => ({ ...prev, ...updated }));
+};
+
   const handleShippingMethodChange = (e) => setShippingMethod(e.target.value);
   const handlePaymentChange = (e) => setPayment({ ...payment, [e.target.name]: e.target.value });
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Order submitted!');
-    // You can send data to backend here
+    toast.info("Payment Successfully");
+    setTimeout(()=> navigate("/invoice"), 500);
   };
 
   const handleDiscountCodeChange = (e) => setDiscountCode(e.target.value);

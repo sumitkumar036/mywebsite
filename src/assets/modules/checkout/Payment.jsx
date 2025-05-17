@@ -1,12 +1,9 @@
 import React from 'react';
-
 export default function Payment({ payment, onChange, onBack, onSubmit }) {
   
   // Format card number with dashes: e.g. 1234-5678-9012-3456
   const formatCardNumber = (value) => {
-    // Remove all non-digit characters first
     const digits = value.replace(/\D/g, '');
-    // Group digits by 4 and join with dash
     return digits.match(/.{1,4}/g)?.join('-') || '';
   };
 

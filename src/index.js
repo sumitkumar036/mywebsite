@@ -20,7 +20,17 @@ root.render(
   <React.StrictMode>
      <React.Fragment>
         <App />
-      <ToastContainer />
+      <ToastContainer 
+      position="bottom-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+  />
       </React.Fragment>
   </React.StrictMode>
 );
